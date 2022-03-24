@@ -1,0 +1,33 @@
+body {
+    background-color: aqua;
+    text-align: center;
+}
+
+table {
+    height: 300px;
+    margin: auto;
+    border:solid 1px;
+    cursor: pointer;
+    table-layout: fixed;
+    width: 50%;
+
+}
+td {
+    height: 30px;
+}
+button {
+    margin: 25px;
+    font-size: larger;
+    
+    
+}
+.hidden {
+    opacity: 0;
+
+}
+
+
+/* .cell{
+
+    visibility: hidden;
+} */
