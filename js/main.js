@@ -1,15 +1,21 @@
 'use strict'
-const EMPTY = '    '
+const EMPTY = '⬛'
 const MINE = '💣'
 const FLAG = '🚩'
 const SMILEY = '😀'
 const WINNER = '😎'
 const DEAD = '💀'
-const NUM_ONE = '<img src="assests/num1.png" alt="1">'
-const NUM_TWO = '<img src="assests/num2.png" alt="2">'
-const NUM_THREE = '<img src="assests/num3.png" alt="3">'
-const NUM_FOUR = '<img src="assests/num4.png" alt="4">'
-const NUM_FIVE = '<img src="assests/num5.png" alt="5">'
+const NUM_ONE = '1️⃣'
+const NUM_TWO = '2️⃣'
+const NUM_THREE = '3️⃣'
+const NUM_FOUR = '4️⃣'
+const NUM_FIVE = '5️⃣'
+
+// const NUM_ONE = '<img src="assests/num1.png" alt="1">'
+// const NUM_TWO = '<img src="assests/num2.png" alt="2">'
+// const NUM_THREE = '<img src="assests/num3.png" alt="3">'
+// const NUM_FOUR = '<img src="assests/num4.png" alt="4">'
+// const NUM_FIVE = '<img src="assests/num5.png" alt="5">'
 
 
 var gBoard
@@ -91,7 +97,9 @@ function setBoard(board, numOfMines = 2) {
                     continue
                 } else {
                     elCellSetToMine.innerText = MINE
-                    gBoard[i][j].isMine = true //this line doesnt set true in the  cell`s object
+
+                    gBoard[randomI][randomJ].isMine = true
+
                     mineCount++
 
                 }
@@ -101,7 +109,7 @@ function setBoard(board, numOfMines = 2) {
             if (elCellSetToEmpty.innerText === MINE) {
                 continue
             } else {
-                elCellSetToEmpty.innerText = EMPTY
+                elCellSetToEmpty.innerText = ''
             }
 
 
@@ -144,7 +152,7 @@ function setMinesNegCount(board, rowIdx, colIdx) {
             var cell = board[i][j]
             if (cell.isMine) {
                 negCount++
-                cell.minesAroundCount = negCount
+                gBoard[i][j].minesAroundCount = negCount
             }
         }
     }
@@ -165,7 +173,7 @@ function renderBoard(board) {
         for (var j = 0; j < board[0].length; j++) {
             var cell = board[i][j]
             var className = 'cell cell-' + i + '-' + j
-            strHTML += '<td onclick="cellClicked(this,' + i + ',' + j + ')" class="' + className + ' hidden"> ' + cell + '</td>'
+            strHTML += '<td onclick="cellClicked(this,' + i + ',' + j + ', event)" class="' + className + ' hidden"> ' + cell + '</td>'
             // `<td onclick="cellClicked(this,${i},${j}) class="${className} hidden">${cell} </td>`
 
 
@@ -207,13 +215,32 @@ function renderBoard(board) {
 
 
 
-function cellClicked(elCell, i, j) {
+function cellClicked(elCell, i, j , ev) {
+    ev.preventDefault()
     elCell.classList.remove('hidden')
+    console.log(ev)
 
     gBoard[i][j].isShown = true
     var res = setMinesNegCount(gBoard, i, j)
-    console.log(res)
+    gBoard[i][j].minesAroundCount = res
+    if(ev ===' ')
+
     console.log(gBoard[i][j])
+    if (elCell.innerText === MINE) {
+        elCell.innerText = MINE
+    } else if (gBoard[i][j].minesAroundCount === 0) {
+        elCell.innerText = EMPTY
+    } else if (gBoard[i][j].minesAroundCount === 1) {
+        elCell.innerText = NUM_ONE
+    } else if (gBoard[i][j].minesAroundCount === 2) {
+        elCell.innerText = NUM_TWO
+    } else if (gBoard[i][j].minesAroundCount === 3) {
+        elCell.innerText = NUM_THREE
+    } else if (gBoard[i][j].minesAroundCount === 4) {
+        elCell.innerText = NUM_FOUR
+    } else if (gBoard[i][j].minesAroundCount === 5) {
+        elCell.innerText = NUM_FIVE
+    }
 
 
     console.log(elCell)
@@ -239,4 +266,6 @@ function expandShown(board, elCell, i, j) {
 function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+
 
